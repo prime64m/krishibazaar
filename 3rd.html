@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Previous head section remains the same -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi Bazaar - Farmer's Marketplace</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <!-- Previous styles remain the same -->
+    <style>
+        /* Previous styles remain... */
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .upload-success {
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Previous navigation and header sections remain the same -->
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 pt-24 pb-12">
+        <!-- Upload Section with Product Display -->
+        <section id="upload" class="my-16">
+            <h2 class="text-4xl font-bold text-center text-green-900 mb-8">Manage Your Products</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Side: Product Display -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-semibold text-green-800 mb-4">Your Products</h3>
+                        <div id="productsList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Products will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Upload Form -->
+                <div class="lg:col-span-1">
+                    <form id="productUploadForm" class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-semibold text-green-800 mb-4">Add New Product</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label for="productName" class="block text-gray-700 font-medium mb-2">Product Name</label>
+                                <input type="text" id="productName" name="productName" required
+                                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-green-300"
+                                    placeholder="Enter product name">
+                            </div>
+
+                            <div>
+                                <label for="price" class="block text-gray-700 font-medium mb-2">Price (₹)</label>
+                                <input type="number" id="price" name="price" required min="0" step="0.01"
+                                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-green-300"
+                                    placeholder="Enter price">
+                            </div>
+
+                            <div>
+                                <label for="quantity" class="block text-gray-700 font-medium mb-2">Quantity (kg)</label>
+                                <input type="number" id="quantity" name="quantity" required min="0"
+                                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-green-300"
+                                    placeholder="Enter quantity">
+                            </div>
+
+                            <div>
+                                <label for="category" class="block text-gray-700 font-medium mb-2">Category</label>
+                                <select id="category" name="category" required
+                                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-green-300">
+                                    <option value="">Select a category</option>
+                                    <option value="vegetables">Vegetables</option>
+                                    <option value="fruits">Fruits</option>
+                                    <option value="grains">Grains</option>
+                                    <option value="spices">Spices</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Product Images</label>
+                                <div class="upload-box" onclick="document.getElementById('productImages').click()">
+                                    <input type="file" id="productImages" name="productImages" accept="image/*" multiple
+                                        class="hidden" onchange="previewImages(event)">
+                                    <div class="flex flex-col items-center p-4 border-2 border-dashed border-green-300 rounded-lg">
+                                        <svg class="w-8 h-8 text-green-700 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                        </svg>
+                                        <p class="text-sm text-gray-600">Click to upload images</p>
+                                    </div>
+                                </div>
+                                <div id="imagePreviewContainer" class="grid grid-cols-2 gap-2 mt-2"></div>
+                            </div>
+
+                            <div>
+                                <label for="description" class="block text-gray-700 font-medium mb-2">Description</label>
+                                <textarea id="description" name="description" rows="3" required
+                                    class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-green-300"
+                                    placeholder="Enter product description"></textarea>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition duration-300">
+                                Add Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer remains the same -->
+
+    <script>
+        // Previous scripts remain...
+
+        // Product management
+        let products = [];
+
+        function createProductCard(product) {
+            return `
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md">
+                    <img src="${product.image}" alt="${product.name}" class="product-image w-full">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-lg font-semibold text-gray-800">${product.name}</h4>
+                            <span class="bg-green-100 text-green-800 text-sm px-2 py-1 rounded">₹${product.price}/kg</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-2">${product.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Quantity: ${product.quantity}kg</span>
+                            <button onclick="deleteProduct(${product.id})" 
+                                class="text-red-500 hover:text-red-700 text-sm">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function deleteProduct(productId) {
+            products = products.filter(p => p.id !== productId);
+            updateProductsList();
+        }
+
+        function updateProductsList() {
+            const productsList = document.getElementById('productsList');
+            productsList.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
+
+        // Enhanced form submission
+        document.getElementById('productUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const productName = document.getElementById('productName').value;
+            const price = document.getElementById('price').value;
+            const quantity = document.getElementById('quantity').value;
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value;
+            
+            // Get the first image preview (if any)
+            const imagePreview = document.querySelector('#imagePreviewContainer img');
+            const imageUrl = imagePreview ? imagePreview.src : '/api/placeholder/400/300';
+
+            // Create new product
+            const newProduct = {
+                id: Date.now(), // Simple unique ID
+                name: productName,
+                price: parseFloat(price),
+                quantity: parseFloat(quantity),
+                category: category,
+                description: description,
+                image: imageUrl
+            };
+
+            // Add to products array
+            products.unshift(newProduct); // Add to beginning of array
+            updateProductsList();
+
+            // Show success message
+            const successAlert = document.createElement('div');
+            successAlert.className = 'upload-success fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg';
+            successAlert.innerHTML = 'Product uploaded successfully!';
+            document.body.appendChild(successAlert);
+
+            // Remove success message after 3 seconds
+            setTimeout(() => {
+                successAlert.remove();
+            }, 3000);
+
+            // Reset form
+            this.reset();
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+        });
+
+        // Image preview function
+        function previewImages(event) {
+            const container = document.getElementById('imagePreviewContainer');
+            container.innerHTML = '';
+            const files = event.target.files;
+
+            for (let i = 0; i < Math.min(files.length, 5); i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'relative';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-full h-32 object-cover rounded-lg';
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = '×';
+                    removeBtn.className = 'absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-600';
+                    removeBtn.onclick = function() {
+                        div.remove();
+                    };
+
+                    div.appendChild(img);
+                    div.appendChild(removeBtn);
+                    container.appendChild(div);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>

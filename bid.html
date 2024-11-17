@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Language Crop Bidding System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="language-selector">
+        <button onclick="setLanguage('en')">English</button>
+        <button onclick="setLanguage('hi')">हिंदी</button>
+        <button onclick="setLanguage('kn')">ಕನ್ನಡ</button>
+    </div>
+    
+    <h1 id="title">Crop Online Bidding System</h1>
+    <table>
+        <thead>
+            <tr>
+                <th id="crop-name">Crop Name</th>
+                <th id="current-bid">Current Bid</th>
+                <th id="min-bid">Minimum Bid</th>
+                <th id="order">Order</th>
+                <th id="contact">Contact</th>
+            </tr>
+        </thead>
+        <tbody id="crop-table-body">
+            <!-- Dynamic content will be injected here -->
+            <tr>
+                <td>Wheat</td>
+                <td>2000</td>
+                <td>1500</td>
+            </tr>
+            <tr>
+                <td>Rice</td>
+                <td>2500</td>
+                <td>2000</td>
+            </tr>
+            <tr>
+                <td>Maize</td>
+                <td>1800</td>
+                <td>1400</td>
+            </tr>
+            <tr>
+                <td>Barley</td>
+                <td>2200</td>
+                <td>1700</td>
+            </tr>
+
+        </tbody>
+    </table>
+    
+    <div id="contact-section">
+        <h2 id="contact-title">Contact Us</h2>
+        <p id="contact-info">If you have any questions, please reach out to us at <a href="mailto:contact@cropbidding.com">contact@cropbidding.com</a>.</p>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soil Health Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md mx-auto">
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold mb-2">Soil Health Analysis</h2>
+                <p class="text-gray-600 mb-6">Enter your soil details for crop and fertilizer suggestions</p>
+                <form id="soilForm" class="space-y-4">
+                    <div>
+                        <label for="soilType" class="block text-sm font-medium text-gray-700">Soil Type</label>
+                        <select id="soilType" name="soilType" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option value="">Select soil type</option>
+                            <option value="Clay">Clay</option>
+                            <option value="Sandy">Sandy</option>
+                            <option value="Loam">Loam</option>
+                            <option value="Red Soil">Red Soil</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="pH" class="block text-sm font-medium text-gray-700">Soil pH</label>
+                        <input type="number" id="pH" name="pH" placeholder="Enter pH value" required min="0" max="14" step="0.1" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                        <input type="text" id="location" name="location" placeholder="Enter your location" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Get Suggestions
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="suggestions" class="mt-6 bg-white shadow-md rounded-lg overflow-hidden hidden">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold mb-4">Suggestions</h2>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="font-semibold">Recommended Crops:</h3>
+                        <ul id="cropsList" class="list-disc pl-5"></ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Recommended Fertilizers:</h3>
+                        <ul id="fertilizersList" class="list-disc pl-5"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock function to simulate database lookup
+        function getSuggestions(soilType, pH, location) {
+            const suggestions = {
+                'Clay': {
+                    crops: ['Wheat', 'Corn', 'Soybeans'],
+                    fertilizers: ['Nitrogen-rich fertilizer', 'Organic matter']
+                },
+                'Sandy': {
+                    crops: ['Carrots', 'Potatoes', 'Peanuts','Onion'],
+                    fertilizers: ['Potassium-rich fertilizer', 'Compost']
+                },
+                'Loam': {
+                    crops: ['Tomatoes', 'Peppers', 'Cucumbers'],
+                    fertilizers: ['Balanced NPK fertilizer', 'Organic compost']
+                },
+                'Red Soil': {
+                    crops: ['Coconut', 'Suger Cane', 'Cucumbers'],
+                    fertilizers: ['Balanced NPK fertilizer', 'Organic compost']
+                }
+            };
+            return suggestions[soilType] || { crops: [], fertilizers: [] };
+        }
+
+        document.getElementById('soilForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const soilType = document.getElementById('soilType').value;
+            const pH = document.getElementById('pH').value;
+            const location = document.getElementById('location').value;
+
+            const suggestions = getSuggestions(soilType, parseFloat(pH), location);
+
+            const cropsList = document.getElementById('cropsList');
+            const fertilizersList = document.getElementById('fertilizersList');
+
+            cropsList.innerHTML = '';
+            fertilizersList.innerHTML = '';
+
+            suggestions.crops.forEach(crop => {
+                const li = document.createElement('li');
+                li.textContent = crop;
+                cropsList.appendChild(li);
+            });
+
+            suggestions.fertilizers.forEach(fertilizer => {
+                const li = document.createElement('li');
+                li.textContent = fertilizer;
+                fertilizersList.appendChild(li);
+            });
+
+            document.getElementById('suggestions').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

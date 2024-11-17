@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Page with Animations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: pageLoad 1s forwards;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Page Load Animation */
+        @keyframes pageLoad {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Team Photo Section */
+        .team-photo {
+            width: 100%;
+            max-width: 800px;
+            margin: 40px auto;
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+            transition: all 1s ease;
+        }
+
+        .team-photo.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .team-photo img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Content Sections */
+        .section {
+            margin: 60px 0;
+            opacity: 0;
+            transform: translateX(-100px);
+            transition: all 0.8s ease;
+        }
+
+        .section.vision {
+            transform: translateX(100px);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Text Animation */
+        .animate-text {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .animate-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Links and Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #4CAF50;
+            transform: scale(1.05);
+            text-decoration: underline;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Our Team</h1>
+        
+        <div class="team-photo">
+            <img src="https://via.placeholder.com/800x400" alt="Team Photo">
+        </div>
+
+        <div class="section overview">
+            <h2>Overview</h2>
+            <p class="animate-text">We are a dedicated team of professionals committed to excellence.</p>
+            <p class="animate-text">With years of experience in the industry, we bring innovation and creativity to every project.</p>
+            <a href="#" class="btn">Learn More</a>
+        </div>
+
+        <div class="section vision">
+            <h2>Our Vision</h2>
+            <p class="animate-text">To revolutionize the industry through cutting-edge solutions and exceptional service.</p>
+            <p class="animate-text">We strive to create meaningful impact in everything we do.</p>
+            <a href="#" class="btn">Our Projects</a>
+        </div>
+    </div>
+
+    <script>
+        // Page Load Animation
+        document.body.style.opacity = 0;
+        window.addEventListener('load', () => {
+            document.body.style.opacity = 1;
+        });
+
+        // Scroll Animation Function
+        function checkScroll() {
+            const elements = document.querySelectorAll('.team-photo, .section, .animate-text');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementBottom = element.getBoundingClientRect().bottom;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100 && elementBottom > 0) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Initial check and scroll event listener
+        window.addEventListener('load', () => {
+            setTimeout(checkScroll, 500); // Initial check after page load
+        });
+        
+        window.addEventListener('scroll', checkScroll);
+
+        // Team Photo Animation with Bounce
+        const teamPhoto = document.querySelector('.team-photo');
+        teamPhoto.addEventListener('animationend', () => {
+            teamPhoto.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                teamPhoto.style.transform = 'scale(1)';
+            }, 150);
+        });
+
+        // Initialize text animation delays
+        document.querySelectorAll('.animate-text').forEach((text, index) => {
+            text.style.transitionDelay = `${index * 0.2}s`;
+        });
+    </script>
+</body>
+</html>

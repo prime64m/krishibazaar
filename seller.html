@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi Bazaar - Sellers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-green: #2E7D32;
+            --light-green: #4CAF50;
+            --hover-green: #1B5E20;
+            --light-gray: #f5f5f5;
+            --success-green: #388E3C;
+            --error-red: #D32F2F;
+        }
+
+        body {
+            background-color: var(--light-gray);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-links {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-green);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--hover-green);
+        }
+
+        .nav-links .active {
+            color: var(--hover-green);
+            font-weight: 600;
+            border-bottom: 2px solid var(--hover-green);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .seller-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            height: 200px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .seller-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .profile-section {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light-gray);
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .info-section {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .seller-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .location {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .products-count {
+            margin-top: auto;
+            font-size: 0.85rem;
+            color: var(--light-green);
+        }
+
+        /* Profile Page Styles */
+        .profile-page {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .profile-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .profile-header-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--light-green);
+        }
+
+        .profile-header-info {
+            flex: 1;
+        }
+
+        .profile-header-name {
+            font-size: 2rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .star-rating {
+            color: #FFB300;
+            font-size: 1.25rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-green);
+        }
+
+        .product-details {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .in-stock {
+            background-color: rgba(56, 142, 60, 0.1);
+            color: var(--success-green);
+        }
+
+        .out-of-stock {
+            background-color: rgba(211, 47, 47, 0.1);
+            color: var(--error-red);
+        }
+
+        .order-request-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .order-request-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, var(--primary-green), var(--hover-green));
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: transparent;
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--hover-green);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#products">Products</a>
+            <a href="#uploads">Uploads</a>
+            <a href="#seller" class="active">Seller</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Sellers Grid -->
+        <div class="grid" id="sellers-grid">
+            <a href="#" class="seller-card" onclick="showProfile('ramesh')">
+                <div class="profile-section">
+                    <img src="/api/placeholder/120/120" alt="Farmer Ramesh" class="profile-image">
+                </div>
+                <div class="info-section">
+                    <h3 class="seller-name">Ramesh Kumar</h3>
+                    <p class="location">📍 Pune, Maharashtra</p>
+                    <p class="products-count">12 Products Listed</p>
+                </div>
+            </a>
+
+            <a href="#" class="seller-card" onclick="showProfile('priya')">
+                <div class="profile-section">
+                    <img src="/api/placeholder/120/120" alt="Farmer Priya" class="profile-image">
+                </div>
+                <div class="info-section">
+                    <h3 class="seller-name">Priya Patel</h3>
+                    <p class="location">📍 Ahmedabad, Gujarat</p>
+                    <p class="products-count">8 Products Listed</p>
+                </div>
+            </a>
+
+            <a href="#" class="seller-card" onclick="showProfile('rajesh')">
+                <div class="profile-section">
+                    <img src="/api/placeholder/120/120" alt="Farmer Rajesh" class="profile-image">
+                </div>
+                <div class="info-section">
+                    <h3 class="seller-name">Rajesh Singh</h3>
+                    <p class="location">📍 Amritsar, Punjab</p>
+                    <p class="products-count">15 Products Listed</p>
+                </div>
+            </a>
+
+            <a href="#" class="seller-card" onclick="showProfile('lakshmi')">
+                <div class="profile-section">
+                    <img src="/api/placeholder/120/120" alt="Farmer Lakshmi" class="profile-image">
+                </div>
+                <div class="info-section">
+                    <h3 class="seller-name">Lakshmi Devi</h3>
+                    <p class="location">📍 Chennai, Tamil Nadu</p>
+                    <p class="products-count">10 Products Listed</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Individual Profile Page -->
+        <div class="profile-page" id="profile-page">
+            <a href="#" class="back-btn" onclick="showGrid()">← Back to Sellers</a>
+            
+            <div class="profile-header">
+                <img src="/api/placeholder/180/180" alt="Farmer Profile" class="profile-header-image" id="profile-image">
+                <div class="profile-header-info">
+                    <h2 class="profile-header-name">
+                        <span id="profile-name">Farmer Name</span>
+                        <span class="star-rating">★★★★☆</span>
+                    </h2>
+                    <p class="location" id="profile-location">Location</p>
+                </div>
+            </div>
+
+            <div class="products-grid">
+                <div class="product-card">
+                    <h3 class="product-name">Organic Rice</h3>
+                    <p class="product-details">Quantity: 500 kg</p>
+                    <p class="product-details">Price: ₹45/kg</p>
+                    <span class="product-status in-stock">In Stock</span>
+                </div>
+
+                <div class="product-card">
+                    <h3 class="product-name">Fresh Tomatoes</h3>
+                    <p class="product-details">Quantity: 200 kg</p>
+                    <p class="product-details">Price: ₹30/kg</p>
+                    <span class="product-status in-stock">In Stock</span>
+                </div>
+
+                <div class="product-card">
+                    <h3 class="product-name">Green Chilies</h3>
+                    <p class="product-details">Quantity: 0 kg</p>
+                    <p class="product-details">Price: ₹60/kg</p>
+                    <span class="product-status out-of-stock">Out of Stock</span>
+                </div>
+            </div>
+
+            <button class="order-request-btn" onclick="sendOrderRequest()">Send Order Request</button>
+        </div>
+    </div>
+
+    <script>
+        const farmers = {
+            ramesh: {
+                name: 'Ramesh Kumar',
+                location: '📍 Pune, Maharashtra',
+                image: '/api/placeholder/180/180'
+            },
+            priya: {
+                name: 'Priya Patel',
+                location: '📍 Ahmedabad, Gujarat',
+                image: '/api/placeholder/180/180'
+            },
+            rajesh: {
+                name: 'Rajesh Singh',
+                location: '📍 Amritsar, Punjab',
+                image: '/api/placeholder/180/180'
+            },
+            lakshmi: {
+                name: 'Lakshmi Devi',
+                location: '📍 Chennai, Tamil Nadu',
+                image: '/api/placeholder/180/180'
+            }
+        };
+
+        function showProfile(farmerId) {
+            const farmer = farmers[farmerId];
+            document.getElementById('profile-name').textContent = farmer.name;
+            document.getElementById('profile-location').textContent = farmer.location;
+            document.getElementById('profile-image').src = farmer.image;
+            
+            document.getElementById('sellers-grid').style.display = 'none';
+            document.getElementById('profile-page').style.display = 'block';
+        }
+
+        function showGrid() {
+            document.getElementById('sellers-grid').style.display = 'grid';
+            document.getElementById('profile-page').style.display = 'none';
+        }
+
+        function sendOrderRequest() {
+            alert('Order request sent! The farmer will be notified of your interest.');
+        }
+    </script>
+</body>
+</html>

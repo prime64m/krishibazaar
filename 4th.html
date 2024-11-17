@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Krishi Bazaar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white bg-opacity-95 shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="img1.jpg" alt="Krishi Bazaar Logo" class="h-12 w-12 rounded-full" aria-hidden="true">
+                    <span class="text-2xl font-bold text-green-800 ml-3">Krishi Bazaar</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-green-800">Home</a>
+                    <a href="products.html" class="nav-link text-gray-700 hover:text-green-800">Products</a>
+                    <a href="#upload" class="nav-link text-gray-700 hover:text-green-800">Upload</a>
+                    <a href="#contact" class="nav-link text-gray-700 hover:text-green-800">Contact</a>
+                    <button class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 transition duration-300">
+                        Login
+                    </button>
+                </div>
+                <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 pt-24 pb-12">
+        <h1 class="text-4xl font-bold text-center text-green-900 mb-8">Our Products</h1>
+        
+        <!-- Categories Section -->
+        <section id="categories" class="my-16">
+            <h2 class="text-3xl font-semibold text-center text-green-800 mb-4">Categories</h2>
+
+            <!-- Grains Section -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-green-700">Grains</h3>
+                <ul class="list-disc pl-6">
+                    <li class="text-gray-600">Rice</li>
+                    <li class="text-gray-600">Wheat</li>
+                    <li class="text-gray-600">Barley</li>
+                </ul>
+            </div>
+
+            <!-- Vegetables Section -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-green-700">Vegetables</h3>
+                <ul class="list-disc pl-6">
+                    <li class="text-gray-600">Tomatoes</li>
+                    <li class="text-gray-600">Potatoes</li>
+                    <li class="text-gray-600">Carrots</li>
+                </ul>
+            </div>
+
+            <!-- Fruits Section -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-green-700">Fruits</h3>
+                <ul class="list-disc pl-6">
+                    <li class="text-gray-600">Apples</li>
+                    <li class="text-gray-600">Bananas</li>
+                    <li class="text-gray-600">Oranges</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Krishi Bazaar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
